@@ -1,13 +1,24 @@
 @import '~node_modules/modern-normalize/modern-normalize.css';
+input {
+  margin-right: 5px;
+  background-color: rgb(224, 255, 255);
+}
+form > button {
+  background-color: darkturquoise;
+  color: #eeeeee;
+  border: 2px solid #eeeeee;
+  border-radius: 5%;
+}
 img {
   width: 100%;
   height: 250px;
 }
+
 .search-form {
   display: flex;
   justify-content: center;
   padding: 30px 0;
-  background-color: dodgerblue;
+  background-color: rgb(30, 144, 255);
 }
 
 .gallery {
@@ -36,8 +47,8 @@ img {
   border-right: 2px solid #eeeeee;
   border-bottom: 2px solid #eeeeee;
   border-left: 2px solid #eeeeee;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.12), 0px 4px 4px rgba(0, 0, 0, 0.06),
-    1px 4px 6px rgba(0, 0, 0, 0.16);
+  box-shadow: 0px 1px 1px rgba(30, 144, 255, 0.12),
+    0px 4px 4px rgba(30, 144, 255, 0.06), 1px 4px 6px rgba(30, 144, 255, 0.16);
   // flex-grow: 1;
 }
 

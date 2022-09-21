@@ -9,41 +9,36 @@ const inputRef = document
 const galleryRef = document.querySelector('.gallery');
 const BtnRef = document.querySelector('.load-more');
 BtnRef.addEventListener('click', onClickBtn);
-function onClickBtn() {
-  // parameters = onSubmit();
-  // parameters.page += 1;
-  // console.log(parameters);
-  // checkSearchValue(parameters);
-}
+
+let inputValue = '';
 
 function onSubmit(e) {
   e.preventDefault();
   galleryRef.innerHTML = '';
-
-  const parameters = new URLSearchParams({
-    key: '30050939-5a79da0c6fd6f5109f8d21733',
-    q: e.currentTarget.elements.searchQuery.value,
-    image_type: 'photo',
-    orientation: 'horizontal',
-    safesearch: true,
-    page: 1,
-    per_page: 40,
-  });
-  if (e.currentTarget.elements.searchQuery.value === '') {
+  inputValue = e.currentTarget.elements.searchQuery.value;
+  // const parameters = new URLSearchParams({
+  //   key: '30050939-5a79da0c6fd6f5109f8d21733',
+  //   q: e.currentTarget.elements.searchQuery.value,
+  //   image_type: 'photo',
+  //   orientation: 'horizontal',
+  //   safesearch: true,
+  //   page: 1,
+  //   per_page: 40,
+  // });
+  if (inputValue === '') {
     Notify.info('Sorry,enter the data for the request');
     return;
   }
-  checkSearchValue(parameters);
-  e.currentTarget.elements.searchQuery.value = '';
-  return parameters;
+  checkSearchValue();
 }
 
-export default async function checkSearchValue(parameters) {
-  const searchValue = await getQuery(parameters);
-
-  if (searchValue.data.hits == []) {
+export default async function checkSearchValue() {
+  const searchValue = await getQuery(inputValue);
+  console.log(searchValue.data.hits.length);
+  if (searchValue.data.hits.length === 0) {
     return;
   }
+
   const markup = searchValue.data.hits
     .map(
       ({
@@ -88,5 +83,9 @@ export default async function checkSearchValue(parameters) {
     .join('');
 
   galleryRef.insertAdjacentHTML('beforeend', markup);
-  BtnRef.classList.toggle('visually-hidden');
+  BtnRef.classList.remove('visually-hidden');
+}
+
+function onClickBtn(e) {
+  checkSearchValue(inputValue);
 }
