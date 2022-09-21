@@ -1,6 +1,6 @@
-import getQuery from './fetchAPI';
+// import getQuery from './fetchAPI';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-
+import ApiService from './fetchAPI';
 const axios = require('axios').default;
 
 const inputRef = document
@@ -8,33 +8,37 @@ const inputRef = document
   .addEventListener('submit', onSubmit);
 const galleryRef = document.querySelector('.gallery');
 const BtnRef = document.querySelector('.load-more');
+
 BtnRef.addEventListener('click', onClickBtn);
+
+const apiService = new ApiService();
 
 let inputValue = '';
 
 function onSubmit(e) {
   e.preventDefault();
   galleryRef.innerHTML = '';
+
   inputValue = e.currentTarget.elements.searchQuery.value;
-  // const parameters = new URLSearchParams({
-  //   key: '30050939-5a79da0c6fd6f5109f8d21733',
-  //   q: e.currentTarget.elements.searchQuery.value,
-  //   image_type: 'photo',
-  //   orientation: 'horizontal',
-  //   safesearch: true,
-  //   page: 1,
-  //   per_page: 40,
-  // });
+  apiService.queryValue = inputValue;
+
   if (inputValue === '') {
     Notify.info('Sorry,enter the data for the request');
     return;
   }
+  apiService.resetPage();
   checkSearchValue();
 }
 
-export default async function checkSearchValue() {
-  const searchValue = await getQuery(inputValue);
-  console.log(searchValue.data.hits.length);
+async function checkSearchValue() {
+  const searchValue = await apiService.getQuery();
+  console.dir(searchValue);
+  if (!searchValue) {
+    Notify.info(`We're sorry, but you've reached the end of search results`);
+    BtnRef.classList.add('visually-hidden');
+    return;
+  }
+
   if (searchValue.data.hits.length === 0) {
     return;
   }
