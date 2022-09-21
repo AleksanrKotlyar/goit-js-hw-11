@@ -1,4 +1,3 @@
-// import getQuery from './fetchAPI';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import ApiService from './fetchAPI';
 const axios = require('axios').default;
@@ -32,10 +31,8 @@ function onSubmit(e) {
 
 async function checkSearchValue() {
   const searchValue = await apiService.getQuery();
-  console.dir(searchValue);
+
   if (!searchValue) {
-    Notify.info(`We're sorry, but you've reached the end of search results`);
-    BtnRef.classList.add('visually-hidden');
     return;
   }
 
@@ -87,9 +84,10 @@ async function checkSearchValue() {
     .join('');
 
   galleryRef.insertAdjacentHTML('beforeend', markup);
-  BtnRef.classList.remove('visually-hidden');
 }
 
 function onClickBtn(e) {
   checkSearchValue(inputValue);
 }
+
+export { BtnRef };
