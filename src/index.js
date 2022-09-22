@@ -51,7 +51,7 @@ async function checkSearchValue() {
         downloads,
       }) =>
         `<div class ="photo-card">
-        <a href="${largeImageURL}"><img src="${webformatURL}" alt="${tags}" loading="lazy" /> 
+        <a href="${largeImageURL}"><img src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
                       <div class="info">
               <p class="info-item">
                 <b>Likes</b>
@@ -78,7 +78,7 @@ async function checkSearchValue() {
                 
               </p>
             </div>
-              </a>
+           
         </div>
         `
     )
