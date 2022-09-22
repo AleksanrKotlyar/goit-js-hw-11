@@ -67,7 +67,8 @@ export default class ApiService {
       Notify.info(`"Hooray! We found more ${this.leftValue} images."`);
       return;
     }
-    BtnRef.classList.add('visually-hidden');
+
+    // BtnRef.classList.add('visually-hidden');
     // Notify.info(`We're sorry, but you've reached the end of search results`);
   }
 }

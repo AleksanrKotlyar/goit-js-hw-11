@@ -90,6 +90,7 @@ async function checkSearchValue() {
 
   galleryRef.insertAdjacentHTML('beforeend', markup);
   lightbox.refresh();
+
   // if (apiService.pageValue === 2 && searchValue.data.totalHits > 40) {
   //   BtnRef.classList.remove('visually-hidden');
   // }
