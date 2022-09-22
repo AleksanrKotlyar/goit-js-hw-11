@@ -31,12 +31,13 @@ function onSubmit(e) {
 
 async function checkSearchValue() {
   const searchValue = await apiService.getQuery();
+  console.log(searchValue);
+  // if (!searchValue.config.data) {
+  //   return;
+  // }
 
-  if (!searchValue) {
-    return;
-  }
-
-  if (searchValue.data.hits.length === 0) {
+  if (searchValue.data.totalHits === 0) {
+    console.log(searchValue.data.totalHits);
     return;
   }
 

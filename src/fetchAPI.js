@@ -30,6 +30,9 @@ export default class ApiService {
           'Sorry, there are no images matching your search query. Please try again'
         );
       }
+      if (response.data.totalHits === 0) {
+        return;
+      }
       BtnRef.classList.remove('visually-hidden');
       this.pageValue += 1;
 
