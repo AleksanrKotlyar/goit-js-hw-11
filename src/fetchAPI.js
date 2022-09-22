@@ -21,9 +21,12 @@ export default class ApiService {
     });
 
     try {
-      const response = await axios.get(
-        `https://pixabay.com/api/?${parameters}`
-      );
+      const response = await axios
+        .get(`https://pixabay.com/api/?${parameters}`)
+        .then(console.log())
+        .catch(error => {
+          console.log(console.log(error));
+        });
 
       if (response.data.total === 0) {
         Notify.failure(
@@ -33,9 +36,8 @@ export default class ApiService {
       if (response.data.totalHits === 0) {
         return;
       }
-      BtnRef.classList.remove('visually-hidden');
-      this.pageValue += 1;
 
+      this.pageValue += 1;
       if (this.pageValue > 2) {
         this.countLeft(response);
       }
@@ -62,10 +64,10 @@ export default class ApiService {
     if (this.totalHits > 40) {
       this.leftValue = this.totalHits - 40;
       this.totalHits = this.leftValue;
-      Notify.info(`"Hooray! We found ${this.leftValue} images."`);
+      Notify.info(`"Hooray! We found more ${this.leftValue} images."`);
       return;
     }
     BtnRef.classList.add('visually-hidden');
-    Notify.info(`We're sorry, but you've reached the end of search results`);
+    // Notify.info(`We're sorry, but you've reached the end of search results`);
   }
 }

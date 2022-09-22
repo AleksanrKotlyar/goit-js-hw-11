@@ -4,6 +4,11 @@ const axios = require('axios').default;
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
+var lightbox = new SimpleLightbox('.photo-card a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
 const inputRef = document
   .querySelector('#search-form')
   .addEventListener('submit', onSubmit);
@@ -34,8 +39,7 @@ function onSubmit(e) {
 async function checkSearchValue() {
   const searchValue = await apiService.getQuery();
 
-  if (searchValue.data.totalHits === 0) {
-    console.log(searchValue.data.totalHits);
+  if (!searchValue) {
     return;
   }
 
@@ -85,26 +89,52 @@ async function checkSearchValue() {
     .join('');
 
   galleryRef.insertAdjacentHTML('beforeend', markup);
+  lightbox.refresh();
+  // if (apiService.pageValue === 2 && searchValue.data.totalHits > 40) {
+  //   BtnRef.classList.remove('visually-hidden');
+  // }
+  if (apiService.pageValue > 2) {
+    ScrollTo();
+  }
 }
 
 function onClickBtn(e) {
   checkSearchValue(inputValue);
 }
-// const { height: cardHeight } = document
-//   .querySelector('.gallery')
-//   .firstElementChild.getBoundingClientRect();
 
-// window.scrollBy({
-//   top: cardHeight * 2,
-//   behavior: 'smooth',
-// });
+function ScrollTo() {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
 
-var gallery = $('.photo-card a').simpleLightbox();
-gallery.refresh();
+  window.scrollBy({
+    top: cardHeight * 5,
+    behavior: 'smooth',
+  });
+}
 
-var lightbox = new SimpleLightbox('.photo-card a', {
-  captionsData: 'alt',
-  captionDelay: 250,
+const callback = entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && apiService.inputValue !== '') {
+      checkSearchValue();
+    }
+  });
+};
+
+const observer = new IntersectionObserver(callback, {
+  rootMargin: '300px',
 });
+observer.observe(BtnRef);
+
+const callbackFooter = entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && galleryRef.firstElementChild) {
+      Notify.info(`We're sorry, but you've reached the end of search results`);
+    }
+  });
+};
+
+const observerFooter = new IntersectionObserver(callbackFooter);
+observerFooter.observe(document.querySelector('footer'));
 
 export { BtnRef };
