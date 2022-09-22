@@ -1,6 +1,8 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import ApiService from './fetchAPI';
 const axios = require('axios').default;
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const inputRef = document
   .querySelector('#search-form')
@@ -31,10 +33,6 @@ function onSubmit(e) {
 
 async function checkSearchValue() {
   const searchValue = await apiService.getQuery();
-  console.log(searchValue);
-  // if (!searchValue.config.data) {
-  //   return;
-  // }
 
   if (searchValue.data.totalHits === 0) {
     console.log(searchValue.data.totalHits);
@@ -52,9 +50,9 @@ async function checkSearchValue() {
         comments,
         downloads,
       }) =>
-        `<div class="photo-card">
-          <img src="${webformatURL}" alt="${tags}" loading="lazy" />
-            <div class="info">
+        `<div class ="photo-card">
+        <a href="${largeImageURL}"><img src="${webformatURL}" alt="${tags}" loading="lazy" /> 
+                      <div class="info">
               <p class="info-item">
                 <b>Likes</b>
                 <span>${likes} </span>
@@ -80,7 +78,9 @@ async function checkSearchValue() {
                 
               </p>
             </div>
-        </div>`
+              </a>
+        </div>
+        `
     )
     .join('');
 
@@ -90,5 +90,21 @@ async function checkSearchValue() {
 function onClickBtn(e) {
   checkSearchValue(inputValue);
 }
+// const { height: cardHeight } = document
+//   .querySelector('.gallery')
+//   .firstElementChild.getBoundingClientRect();
+
+// window.scrollBy({
+//   top: cardHeight * 2,
+//   behavior: 'smooth',
+// });
+
+var gallery = $('.photo-card a').simpleLightbox();
+gallery.refresh();
+
+var lightbox = new SimpleLightbox('.photo-card a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
 
 export { BtnRef };
