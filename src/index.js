@@ -37,24 +37,25 @@ function onSubmit(e) {
 }
 
 async function checkSearchValue() {
-  const searchValue = await apiService.getQuery();
+  try {
+    const searchValue = await apiService.getQuery();
+    console.log(searchValue);
+    if (!searchValue) {
+      return;
+    }
 
-  if (!searchValue) {
-    return;
-  }
-
-  const markup = searchValue.data.hits
-    .map(
-      ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      }) =>
-        `<div class ="photo-card">
+    const markup = searchValue.data.hits
+      .map(
+        ({
+          webformatURL,
+          largeImageURL,
+          tags,
+          likes,
+          views,
+          comments,
+          downloads,
+        }) =>
+          `<div class ="photo-card">
         <a href="${largeImageURL}"><img src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
                       <div class="info">
               <p class="info-item">
@@ -85,17 +86,20 @@ async function checkSearchValue() {
            
         </div>
         `
-    )
-    .join('');
+      )
+      .join('');
 
-  galleryRef.insertAdjacentHTML('beforeend', markup);
-  lightbox.refresh();
+    galleryRef.insertAdjacentHTML('beforeend', markup);
+    lightbox.refresh();
 
-  // if (apiService.pageValue === 2 && searchValue.data.totalHits > 40) {
-  //   BtnRef.classList.remove('visually-hidden');
-  // }
-  if (apiService.pageValue > 2) {
-    ScrollTo();
+    // if (apiService.pageValue === 2 && searchValue.data.totalHits > 40) {
+    //   BtnRef.classList.remove('visually-hidden');
+    // }
+    if (apiService.pageValue > 2) {
+      ScrollTo();
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
 
