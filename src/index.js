@@ -39,7 +39,7 @@ function onSubmit(e) {
 async function checkSearchValue() {
   try {
     const searchValue = await apiService.getQuery();
-    console.log(searchValue);
+
     if (!searchValue) {
       return;
     }
@@ -134,12 +134,8 @@ observer.observe(BtnRef);
 const callbackFooter = entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting && galleryRef.firstElementChild) {
-      Notify.info(`We're sorry, but you've reached the end of search results`);
     }
   });
 };
-
-const observerFooter = new IntersectionObserver(callbackFooter);
-observerFooter.observe(document.querySelector('footer'));
 
 export { BtnRef };

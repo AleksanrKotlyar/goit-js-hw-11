@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { BtnRef } from './index';
 
@@ -24,8 +24,13 @@ export default class ApiService {
       const response = await axios
         .get(`https://pixabay.com/api/?${parameters}`)
         .then(console.log())
-        .catch(error => {
-          console.log(console.log(error));
+        .catch(function (error) {
+          if (error.response) {
+            if (error.response.data.includes('valid range'))
+              Notify.info(
+                `We're sorry, but you've reached the end of search results`
+              );
+          }
         });
 
       if (response.data.total === 0) {
@@ -41,7 +46,6 @@ export default class ApiService {
       if (this.pageValue > 2) {
         this.countLeft(response);
       }
-
       return response;
     } catch (error) {
       console.log(error);
