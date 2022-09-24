@@ -87,8 +87,6 @@ export default class ApiService {
   endRequest(response) {
     if (response.data.totalHits > 0 && response.data.hits.length < 40) {
       this.request = false;
-      console.log(response.data.totalHits);
-      console.log(response.data.hits.length);
     }
   }
 }

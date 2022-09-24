@@ -39,7 +39,6 @@ function onSubmit(e) {
 
 async function checkSearchValue() {
   try {
-    console.log(apiService.request);
     if (!apiService.request) {
       return;
     }
