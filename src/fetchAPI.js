@@ -8,6 +8,7 @@ export default class ApiService {
     this.inputValue = '';
     this.leftValue = 0;
     this.totalHits = 0;
+    this.request = true;
   }
   async getQuery() {
     const parameters = new URLSearchParams({
@@ -33,19 +34,26 @@ export default class ApiService {
           }
         });
 
-      if (response.data.total === 0) {
+      this.endRequest(response);
+      if (response.data.total === 0 || response.data.totalHits === 0) {
         Notify.failure(
           'Sorry, there are no images matching your search query. Please try again'
         );
+        return;
       }
-      if (response.data.totalHits === 0) {
+      if (!this.request) {
+        Notify.info(
+          `We're sorry, but you've reached the end of search results`
+        );
         return;
       }
 
       this.pageValue += 1;
+
       if (this.pageValue > 2) {
         this.countLeft(response);
       }
+
       return response;
     } catch (error) {
       console.log(error);
@@ -58,8 +66,11 @@ export default class ApiService {
 
   resetPage() {
     this.pageValue = 1;
+    this.request = true;
   }
-
+  // resetTrigger() {
+  //   this.inputValue = '';
+  // }
   countLeft(resp) {
     if (this.pageValue === 3) {
       this.totalHits = resp.data.totalHits - 40;
@@ -74,5 +85,10 @@ export default class ApiService {
 
     // BtnRef.classList.add('visually-hidden');
     // Notify.info(`We're sorry, but you've reached the end of search results`);
+  }
+  endRequest(response) {
+    if (response.data.totalHits > 0 && response.data.hits.length === 0) {
+      this.request = false;
+    }
   }
 }

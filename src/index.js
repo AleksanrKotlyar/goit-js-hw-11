@@ -23,6 +23,7 @@ let inputValue = '';
 
 function onSubmit(e) {
   e.preventDefault();
+
   galleryRef.innerHTML = '';
 
   inputValue = e.currentTarget.elements.searchQuery.value;
@@ -38,6 +39,9 @@ function onSubmit(e) {
 
 async function checkSearchValue() {
   try {
+    if (!apiService.request) {
+      return;
+    }
     const searchValue = await apiService.getQuery();
 
     if (!searchValue) {
@@ -120,7 +124,13 @@ function ScrollTo() {
 
 const callback = entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting && apiService.inputValue !== '') {
+    if (
+      entry.isIntersecting &&
+      apiService.inputValue !== '' &&
+      apiService.request &&
+      // apiService.trigger
+      apiService.pageValue > 1
+    ) {
       checkSearchValue();
     }
   });
@@ -131,11 +141,4 @@ const observer = new IntersectionObserver(callback, {
 });
 observer.observe(BtnRef);
 
-const callbackFooter = entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting && galleryRef.firstElementChild) {
-    }
-  });
-};
-
-export { BtnRef };
+// export { BtnRef };
