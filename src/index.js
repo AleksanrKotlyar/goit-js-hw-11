@@ -39,6 +39,7 @@ function onSubmit(e) {
 
 async function checkSearchValue() {
   try {
+    console.log(apiService.request);
     if (!apiService.request) {
       return;
     }
@@ -141,4 +142,7 @@ const observer = new IntersectionObserver(callback, {
 });
 observer.observe(BtnRef);
 
+if (!apiService.request) {
+  observer.unobserve(BtnRef);
+}
 // export { BtnRef };

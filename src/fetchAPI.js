@@ -68,9 +68,7 @@ export default class ApiService {
     this.pageValue = 1;
     this.request = true;
   }
-  // resetTrigger() {
-  //   this.inputValue = '';
-  // }
+
   countLeft(resp) {
     if (this.pageValue === 3) {
       this.totalHits = resp.data.totalHits - 40;
@@ -87,8 +85,10 @@ export default class ApiService {
     // Notify.info(`We're sorry, but you've reached the end of search results`);
   }
   endRequest(response) {
-    if (response.data.totalHits > 0 && response.data.hits.length === 0) {
+    if (response.data.totalHits > 0 && response.data.hits.length < 40) {
       this.request = false;
+      console.log(response.data.totalHits);
+      console.log(response.data.hits.length);
     }
   }
 }
