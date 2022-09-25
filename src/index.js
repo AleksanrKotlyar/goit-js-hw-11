@@ -137,7 +137,7 @@ const callback = entries => {
 };
 
 const observer = new IntersectionObserver(callback, {
-  rootMargin: '300px',
+  rootMargin: '350px',
 });
 observer.observe(BtnRef);
 
